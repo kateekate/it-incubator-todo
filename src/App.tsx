@@ -2,20 +2,27 @@ import React, { useState } from "react";
 import TodoList from "./Components/TodoList";
 import { TaskType } from "./Types/TaskType";
 import { FilterValueType } from "./Types/FilterValueType";
+import { v1 } from "uuid";
 
 function App() {
   const [tasks, setTasks] = useState<Array<TaskType>>([
-    { id: 1, title: "HTML & CSS", isDone: true },
-    { id: 2, title: "JS", isDone: false },
-    { id: 3, title: "React", isDone: true },
-    { id: 4, title: "Next.js", isDone: false },
+    { id: v1(), title: "HTML & CSS", isDone: true },
+    { id: v1(), title: "JS", isDone: false },
+    { id: v1(), title: "React", isDone: true },
+    { id: v1(), title: "Next.js", isDone: false },
   ]);
 
   const [filter, setFilter] = useState<FilterValueType>("all");
 
-  function removeTasks(id: number) {
+  function removeTasks(id: string) {
     const filteredTasks = tasks.filter((t) => t.id !== id);
     setTasks(filteredTasks);
+  }
+
+  function addTask(title: string) {
+    const newTask = { id: v1(), title: title, isDone: false };
+    const newTasks = [newTask, ...tasks];
+    setTasks(newTasks);
   }
 
   function changeFilter(value: FilterValueType) {
@@ -37,6 +44,7 @@ function App() {
         title="My skills"
         tasks={tasksForTodoList}
         removeTasks={removeTasks}
+        addTask={addTask}
         changeFilter={changeFilter}
       />
     </div>
